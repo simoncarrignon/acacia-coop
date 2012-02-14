@@ -1,0 +1,64 @@
+
+Le sujet à quelque peu changé et porte désormais plutôt sur l'implémentation de comportements permettant de garantir une meilleur autonomie énergétique possible au sein de groupes de robots simulés.
+-----------
+1er diapo :
+Problématique
+
+Autonomie est un défi majeur, la preuve Vhaugan et al. Des proposition existe et nottament des robots capabable d'utilise la matière organique, disponible dans l'environnement, et des robots trophallactiqe.
+-----------
+Objectif du stage
+
+Comment en utilisant des règle simple, local, contrôler et améliorer ses echange suivant les condiitons envornnemental?
+
+pour cela nous avons testé via des SMA le taux de survie de différentest population d'agents en fonction de différents environnements
+
+-----------
+L'environnement ACACIA
+
+Pour nos test nous avons utilisé ACACIACoop Dans lequel existe diff entité : agent, obstacle et ressource
+
+------------
+bis
+
+Les agents peuvent percevoir et catégoriser l'environnement , interagir entre eux sur la base de 3 comportements différents et mémoriser les 3 precedant echanges
+
+------------
+Expérience
+
+Pour répondre à nos quesiton nous avons tester trois populations différentes (kind, self, mixte) dans 27 environnement différents dans lesquelles l'abondances des ressources energetiques et les obstacles changent. Pour chaque environnet nous avons fait 100 simulations par population afin d'anlyse la variation du nombre d'agents survivant au cours du temps
+
+------------
+Résultats
+
+
+On observe que si l'environnement est hostil il n'y a ni avantage, ni desavantage à présenter des comportement D'échange. 
+
+En revanche dans des environnements plus abondant en ressources energetique des populations composé uniquement d'individus échangeant leurs energies montre des taux de survie plus important (presque 8 robots dans notre exemple).
+------------
+Cela semble du au faite que lorsque la popualtion survie mieux les individus on donc plus de chance de se rencontrer et ainsi plus de chance d'echanger. Ce graphe le montre bien, plus la population en début de simulation survie plus grand est lécart entre les population kind et selfish grandi : autrement dit plus efficace est le comportement d'echange en comparaison d'un comportement non cooperatif.
+------------
+
+Conclusion et apports de notre étude
+
+Nous avons montrée que des règles simple et local d'échange popurrai être implémenté dans des robots trophallactique par exemple et en améliorer l'autonomie energétique.
+
+En utilisant ces mééthodes des règles de partageant inconditionnel pourait Être très efficace si l'environnement est suffisamment riche en ressources'
+
+------------
+
+Limites et perspectives
+
+
+Nos échanges ne prennent pas en compte le déplacement necessaire pour etablir un contact physque et echanger les resosurce, il faudrait implementer ces deplacement pour tester la différence.
+
+Il serait envisageable de tester des populations différentes avec des mixtes plus variées.
+Nous pourrions faire évoluer l'environnement en faisant variée les règles caractérisant la topologie de l'environnement.
+
+Il pourrait aussi ètre interressant de tester d'autre modele d'échange dans ACACIA afin de voir si nos model sont plus efficace.''
+
+
+
+
+
+
+

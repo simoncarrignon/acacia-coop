@@ -1,0 +1,130 @@
+\documentclass[8pt,handout]{beamer}
+\hyphenation{tro-pha-lla-ctique}
+
+
+\usepackage[utf8x]{inputenc}
+ \usepackage[T1]{fontenc}
+\usepackage{wrapfig}
+\usepackage{default}
+% \usetheme{Goettingen}
+\usepackage{amsmath}
+\usecolortheme{rose} 
+% \setbeamersize[width=0cm]{sidebar}
+
+
+\usepackage{enumerate}
+\usepackage[]{natbib}
+\usepackage{graphicx}
+\usepackage{wrapfig} 
+\bibpunct{(}{)}{,}{a}{,}{,}
+\usepackage{lmodern}
+% \usepackage[colorlinks=true,urlcolor=blue,citecolor=green,linkcolor=blue,bookmarks=true]{hyperref}
+\usepackage[french]{babel}
+\author[]{Simon Carrignon}
+\institute[]{
+École~Pratique~des~Hautes~Études, Laboratoire de Cognition~Humaine~et~ARTificielle
+
+\pgfdeclareimage[height=0.5cm]{ephe}{logo_ephe_large.jpg} %declare logo image with an alias here 
+\pgfuseimage{ephe} \hfill \pgfdeclareimage[height=0.5cm]{chart}{logo-120px.png} %declare logo image with an alias here 
+\pgfuseimage{chart}}
+\usepackage[small]{caption}
+
+\setbeamertemplate{caption}[numbered]
+\usepackage{subfigure}
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathreplacing}
+\title[]{Proposition de solutions bas\'{e}es sur des heuristiques d'\'{e}change \'{e}n\'{e}rgetique pour la robotique autonome }
+% \logo{\includegraphics[height=0.5cm]{logo_ephe_large.jpg}}
+%\setbeamertemplate{sidebar right}[width = 0]%
+%[top=structure.fg!05,bottom=structure.fg!90]
+
+% \usepackage[footheight=1em]{beamerthemeboxes}
+\setbeamersize{sidebar right width=0cm}
+% \addfootboxtemplate{\color{black}}{\color{white}
+%      \hfill\insertframenumber/11\hspace{2em}\null}
+\begin{document}
+
+
+
+
+
+
+\begin{frame}{}
+\small
+
+\begin{alertblock}{Question}
+ 
+ Quelle modalité de comportement (échange vs non échange d'énergie) est la plus efficace pour maintenir le plus de robots ``en fonctionnement'' suivant les conditions de l'environnement? 
+\end{alertblock}
+\begin{columns}
+\column{0.333\textwidth}
+
+
+\column{0.333\textwidth}
+
+\column{0.333\textwidth}
+\end{columns}
+
+\begin{columns}[t] 
+\centering
+\column{0.40\textwidth}
+\begin{block}{Expériences}
+\begin{enumerate}[ Exp I -]
+  \item Quantité d'énergie par source (NF) faible~(5), 
+  \item NF moyenne~(11), 
+  \item NF abondante~(17). %=>  27 environnements
+\end{enumerate}
+\end{block}
+% \vspace{2pt}
+\begin{block}{Variable Dépendante } Nombre d'agents survivants à la fin de la simulation.\end{block}
+
+\column{0.70\textwidth}
+
+
+\begin{block}{Paramètres constants}
+\begin{itemize}
+ \item Nb d'agents initial : 100,
+ \item Durée de la simulation : 1500 unités temporelles,
+ \item Énergie initiale des agents : ${1\over{2}} \times{\mbox{Energie}_{max}}=100$,
+ \item Nombre d'arbres à l'initialisation : 3.
+%   \item Nombre d'obstacles (NO) : 20,
+
+%   \item quantité d'énergie par source (NF) : faible~(5), moyenne~(11), abondante~(17,) %=>  27 environnements
+\end{itemize}
+\end{block}
+
+
+
+\begin{block}{Paramètres variables (VI)}
+\begin{enumerate}
+  \item Modalité de comportement de la population initiale : 
+    \begin{enumerate}[a -]%\scriptsize
+    \item uniquement kind $\Rightarrow $ l'échange d'énergie est possible,
+    \item uniquement selfish $\Rightarrow $ l'échange d'énergie est impossible.			%	=>  100 Simulation par type de population
+%     \item 1/3 kind, 1/3 selfish, 1/3 TFT (population “mixte”).
+   \end{enumerate}
+  \item Vitesse de réapparition des sources (V) : 
+  \begin{enumerate}[a -]
+    \item lente~(3), 
+    \item moyenne~(4), 
+    \item rapide~(5).
+
+  \end{enumerate}
+\end{enumerate}
+\end{block}
+
+
+
+\end{columns}
+\centering
+
+$ \underbrace{ \mbox{100 simulations\;}\; \times \; \mbox{ 2 Populations } \; \times \; \mbox{ 3 Expériences }  \; \times \; \mbox{9 environnements}}_{\mbox{5400 Simulations}} $
+	
+
+
+\end{frame}
+
+
+
+\end{document}
+ 
