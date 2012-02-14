@@ -106,25 +106,25 @@ to move
   set-screen-coors ;redéfini le nom des var de l'Ecran
 
   set count-sims 0  ;initialisation du decompte des sims
-  file-open date-and-time + "ACACIAout.csv"   ;
+  file-open "../data/" + date-and-time + "ACACIAout.csv"   ;
 
   show-global-header ;affiche l'en tête du fichier qui sera imprimé
     
 
 ;bypass manual settings----------
-let counter_type 0
+;let counter_type 0
 ;repeat 2[
-;set fruitPerTree 5
-;repeat 3 [
-;set num-obstacles 10
-;repeat 3 [
-;set generating-speed 5
-;repeat 3 [
+set fruitPerTree 5
+repeat 3 [
+set num-obstacles 10
+repeat 3 [
+set generating-speed 3
+repeat 3 [
 ;
 ;set counter_type 0
-set rep 100
+;set rep 100
 ;
-repeat  21 [
+;repeat  21 [
 ;--------------------------------
 
 repeat num-sims [
@@ -147,9 +147,9 @@ repeat num-sims [
     ;si:Decembre 2010 : if pour faire séries de mesures
 
 
-    if( counter_type = 0)[ set Distribution-Agents "selfish" ]
-    if( counter_type = 1)[ set Distribution-Agents "kind" ]
-    if( counter_type = 2)[ set Distribution-Agents "1/3kind1/3realist1/3selfish" ]
+;    if( counter_type = 0)[ set Distribution-Agents "selfish" ]
+;    if( counter_type = 1)[ set Distribution-Agents "kind" ]
+;    if( counter_type = 2)[ set Distribution-Agents "1/3kind1/3realist1/3selfish" ]
 
   
      ask turtles [setup-memory] 
@@ -171,31 +171,27 @@ repeat num-sims [
        ifelse(global-output = true)[ show-global-results ][ show-case-results ]
   
      ]
-
-
-
-  
   ]
   
   
 ;--------------------------------
-        set rep rep - 5
-;        ]    
-;  set counter_type counter_type + 1
-;  ;]
-;   
-;   set generating-speed generating-speed + 1
-;   ]
-;  set num-obstacles num-obstacles + 10  
+;        set rep rep - 5
+;   ]    
+;   set counter_type counter_type + 1
 ;  ]
-;  
-;   set fruitPerTree fruitPerTree + 6
-;  
-; ]
+   
+   set generating-speed generating-speed + 1
+   ]
+  set num-obstacles num-obstacles + 10  
+  ]
+  
+   set fruitPerTree fruitPerTree + 6
+  
+ ]
 ; 
 ;  ;set big-memory not big-memory
 ; 
-  ]
+;  ]
   
   ;old export way
  ;export-output date-and-time + "ACACIAout_" + count-sims + ".csv"   ;
@@ -330,7 +326,7 @@ end
 ;========================  /COOP  =======================================================
 ;----------------------------------------------------------------------------------------
 
-
+;;Function used to select how are shaped agents
 to change-shape
 ifelse(adaptCol)[
   if strategy = 1 [set shape "butterfly_real"]
@@ -447,7 +443,7 @@ to scan-line [distance-code]
         let ncode 0
         let en 5
         set see-what pcolor-of patch-right-and-ahead angle dist;      
-        ;my strange strategie to see how the agent looks at its worl
+        ;my strange strategie to see how the agent looks at its world
 ;           set pcolor-of patch-right-and-ahead angle dist white;
 ;                 wait .005
 ;          set pcolor-of patch-right-and-ahead angle dist see-what;
@@ -473,7 +469,7 @@ end
 
 ;----------------------------------------------------------------------------------------
 ;proc go-obs :
-; when an agent see an obstacle, it directs its heading toward the obstacle until his is near the obstacle
+; when an agent see an obstacle, it directs its heading toward the obstacle until it is near the obstacle
 ; when the agent is near enough, it choose randomly a direction, right or left, and start to circle the obstacle 
 to go-obs
 
@@ -653,11 +649,11 @@ to setup-general-params
   ;----------------------------------------             
 
   
-  ;set decrease-k (ln (100 * num-agents)) / 100;;;;;K=? ;NE SEMBLE PLUS UTILISER
+  ;set decrease-k (ln (100 * num-agents)) / 100;;;;;K=? ;??NO MORE USEFUL
   set max-h           90;;;;;;;h=? l'angle droit?
   set num-cooperation 0    ;compteur 
   set num-defection 0      ;compteur
-  set title "ACACIA Cooperation version 6 SIMON"
+  set title "ACACIA Cooperation version"
 end
 
 
@@ -711,16 +707,22 @@ end
 ;----------------------------
 to setup-memory
   locals [i]  
+   
+   ;;ESS test
    ifelse curRep < rep
    [
      set curRep curRep + 1
      set strategy 0 change-shape
    ]
    [set strategy 2 change-shape]
+   
+   ;----------------------------
+   ;;fixed pop test 
 ;  if Distribution-Agents = "selfish" [set strategy 0 change-shape]
 ;  if Distribution-Agents = "realist" [set strategy 1 change-shape]
 ;  if Distribution-Agents = "kind" [set strategy 2 change-shape]
 ;  if Distribution-Agents = "1/3kind1/3realist1/3selfish" [set strategy random 3 change-shape]
+;;;-------------------
   set experience 0
   set last-seen -1
   set selfish-flag 0
@@ -866,6 +868,10 @@ end
 ;------------------------------------------------------------------------
 ;        FUNCTION USED TO PRINT PLOTS AND THE OUTPUT FILE
 ;
+; I (Simon C.) have choose to not keep the old "acacia plot" up to date.
+; they remain but are almost empty, however all informations needed to made 
+; more beautiful plot is now available in an output FILE inside the 
+; "../data" directory
 ;------------------------------------------------------------------------
 ;------------------------------------------------------------------------
 ; to print the header
@@ -927,7 +933,7 @@ to show-global-header
     file-print line                
   
   ;]
-;full output : high space cost
+;full output : high space cost, but old way so maybe still usefull
 ;  file-print " Nb_Simulation \t Counter  \t  Memory  \t  Ag-Initial-Behav  \t  Obstacle-Adapt  \t  Expl-adapt \t  Rich-adapt \t  Agent-Coop \t  Reg-speed \t  Nb-Obstacle   \t  Fq_alive  \t  Fq_die   \t   Fq_rich   \t   Fq_normal   \t   Fq_poor   \t   Fq_kind   \t   Fq_realist   \t   Fq_selfish    \t   Fq_coop   \t   Fq_defect   \t   interaction \t adaptation-ag \t p-adaptation-Obst \t vital-space \t attention-angle \t attention-resolution \t attention-distance \t Num_Fruits \t Rep" ;///////////////////////////////////////////////////////////////
 ;
   file-print "sim_num \t time \t rs \t no \t n_alive \t n_kind \t n_realist \t n_selfish \t vital-space \t nf \t Rep" ;///////////////////////////////////////////////////////////////
@@ -1022,7 +1028,6 @@ if print-every > 0 and (count-steps mod print-every) = 0
 [
 file-print "S"+ count-sims + "\t" + count-steps +"\t"+ generating-speed + "\t" + num-obstacles +"\t"+ n-alive +"\t"+ n-good +"\t"+ n-realist +"\t"+ n-bad +"\t"+ v-space +"\t"+ fruitPerTree + "\t" + curRep
 ]
-;  file-print "sim_num \t time \t rs \t no \t n_alive \t n_kind \t n_realist \t n_selfish \t vital-space \t nf \t rep" ;///////////////////////////////////////////////////////////////
 
 end
 
@@ -1121,7 +1126,7 @@ GRAPHICS-WINDOW
 25
 25
 9.0
-1
+0
 7
 1
 1
@@ -1152,7 +1157,7 @@ num-sims
 num-sims
 1
 2000
-5
+100
 1
 1
 NIL
@@ -1166,7 +1171,7 @@ num-steps
 num-steps
 0
 5000
-61
+2000
 1
 1
 runs
@@ -1230,7 +1235,7 @@ generating-speed
 generating-speed
 1
 7
-5
+7
 1
 1
 NIL
@@ -1333,7 +1338,7 @@ fruitPerTree
 fruitPerTree
 0
 108
-17
+5
 1
 1
 NIL
@@ -1394,7 +1399,7 @@ num-obstacles
 num-obstacles
 0
 50
-20
+10
 1
 1
 NIL
@@ -1446,7 +1451,7 @@ CHOOSER
 Distribution-Agents
 Distribution-Agents
 "selfish" "realist" "kind" "1/3kind1/3realist1/3selfish"
-0
+2
 
 SWITCH
 11
@@ -1510,7 +1515,7 @@ print-every
 print-every
 0
 2000
-500
+1000
 25
 1
 NIL
@@ -1693,12 +1698,6 @@ false
 PENS
 "rich" 1.0 0 -1184463 true
 "explorer" 1.0 0 -10899396 true
-
-OUTPUT
-802
-316
-1077
-454
 
 PLOT
 653
