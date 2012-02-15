@@ -1,3 +1,10 @@
+##########################################
+##########################################
+## Some useful scripts able to handle file from
+## the last version of acacia-nrg 
+## (available at "git@gitorious.org:acacia-coop/acacia-coop.git")
+##########################################
+##########################################
 trecol=c()
 trecol["kind"]="chartreuse2"
 trecol["real"]="#5613CA"
@@ -438,6 +445,9 @@ axis(2,yaxs)
 
 }
 
+#####
+## quick and dirty copy past from medea scripts
+#####
 createHeatMat<-function(x,y,data,complete=TRUE,mod=1,ymin=0,ymax=100){
  	res=daply(.variables=c(x,y),.data=data,.drop_i=FALSE,.fun=function(x)length(x[,1]))
 	res[is.na(res)]<-0
