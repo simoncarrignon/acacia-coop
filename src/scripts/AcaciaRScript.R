@@ -5,10 +5,35 @@
 ## (available at "git@gitorious.org:acacia-coop/acacia-coop.git")
 ##########################################
 ##########################################
+
 trecol=c()
 trecol["kind"]="chartreuse2"
 trecol["real"]="#5613CA"
 trecol["self"]="#FF9400"
+
+## Read a file in the good csv format and return a table
+readAcaciaOutput<-function(filename){
+	return( read.csv(filename,sep="\t",skip=26) )
+	
+}
+
+
+threeVitalSpacePlot<-function(data){
+
+library(sm)
+
+# plot densities
+sm.density.compare(data$vital.space, data$no, xlab="Vital Space")
+title(main="Vital Space wrt Obstacle Number")
+
+# add legend via mouse click
+colfill<-c(2:(2+length(unique(data$no))))
+legend("topright",legend=unique(sort(data$no)), fill=colfill) 
+}
+
+
+
+
 
 
 acacia<-function(a,nf,rs,no){return(a[a$Num_Fruits == nf & a$Nb.Obstacle == no & a$Reg.speed == rs,])}
@@ -413,6 +438,9 @@ plotAliveTwoPop<-function(data,col=c("red","white")){
 
 }
 
+#####
+## quick and dirty copy past from medea scripts
+#####
 plotTwoHeatMat<-function(data,env,mod){
 	layout(mat=matrix(c(1,2),nrow=2,ncol=1),heights=matrix(c(.5,.5),nrow=1,ncol=2))
 	
@@ -445,9 +473,6 @@ axis(2,yaxs)
 
 }
 
-#####
-## quick and dirty copy past from medea scripts
-#####
 createHeatMat<-function(x,y,data,complete=TRUE,mod=1,ymin=0,ymax=100){
  	res=daply(.variables=c(x,y),.data=data,.drop_i=FALSE,.fun=function(x)length(x[,1]))
 	res[is.na(res)]<-0
