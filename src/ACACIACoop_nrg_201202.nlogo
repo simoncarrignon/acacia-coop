@@ -14,7 +14,9 @@ globals[
   count-sims;num de la sim
   count-steps ;current step of the sim
   title
-
+  
+  dec ;;
+  distA ;;
   
 ;-------------------------
 ;  Counter for outputs (plot & file)
@@ -653,6 +655,8 @@ to setup-general-params
   set max-h           90;;;;;;;h=? l'angle droit?
   set num-cooperation 0    ;compteur 
   set num-defection 0      ;compteur
+  set dec 70
+  set distA 3
   set title "ACACIA Cooperation version"
 end
 
@@ -709,18 +713,18 @@ to setup-memory
   locals [i]  
    
    ;;ESS test
-   ifelse curRep < rep
-   [
-     set curRep curRep + 1
-     set strategy 0 change-shape
-   ]
-   [set strategy 2 change-shape]
+;   ifelse curRep < rep
+;   [
+;     set curRep curRep + 1
+;     set strategy 0 change-shape
+;   ]
+;   [set strategy 2 change-shape]
    
    ;----------------------------
    ;;fixed pop test 
-;  if Distribution-Agents = "selfish" [set strategy 0 change-shape]
-;  if Distribution-Agents = "realist" [set strategy 1 change-shape]
-;  if Distribution-Agents = "kind" [set strategy 2 change-shape]
+  if Distribution-Agents = "selfish" [set strategy 0 change-shape]
+  if Distribution-Agents = "realist" [set strategy 1 change-shape]
+  if Distribution-Agents = "kind" [set strategy 2 change-shape]
 ;  if Distribution-Agents = "1/3kind1/3realist1/3selfish" [set strategy random 3 change-shape]
 ;;;-------------------
   set experience 0
@@ -1119,10 +1123,10 @@ end
 ;
 @#$#@#$#@
 GRAPHICS-WINDOW
-327
-76
-796
-566
+331
+82
+800
+572
 25
 25
 9.0
@@ -1142,9 +1146,9 @@ GRAPHICS-WINDOW
 
 CC-WINDOW
 5
-839
-1111
-934
+715
+1118
+810
 Command Center
 0
 
@@ -1157,7 +1161,7 @@ num-sims
 num-sims
 1
 2000
-100
+200
 1
 1
 NIL
@@ -1171,16 +1175,16 @@ num-steps
 num-steps
 0
 5000
-2000
+2254
 1
 1
 runs
 
 SWITCH
-801
-456
-942
-489
+808
+577
+949
+610
 global-output
 global-output
 0
@@ -1208,15 +1212,15 @@ SWITCH
 43
 play
 play
-0
+1
 1
 -1000
 
 SLIDER
-138
-416
-314
-449
+24
+495
+200
+528
 attention-resolution
 attention-resolution
 1
@@ -1227,24 +1231,24 @@ attention-resolution
 point
 
 SLIDER
-807
-274
-915
-307
+829
+332
+937
+365
 generating-speed
 generating-speed
 1
 7
-7
+3
 1
 1
 NIL
 
 SLIDER
-10
-57
-147
-90
+36
+111
+173
+144
 num-agents
 num-agents
 1
@@ -1255,10 +1259,10 @@ num-agents
 NIL
 
 SLIDER
-151
-57
-284
-90
+177
+111
+310
+144
 total-energy
 total-energy
 0
@@ -1269,10 +1273,10 @@ total-energy
 NIL
 
 SWITCH
-7
-495
-133
-528
+182
+326
+308
+359
 agent-coop
 agent-coop
 0
@@ -1280,10 +1284,10 @@ agent-coop
 -1000
 
 SWITCH
-23
-455
-118
-488
+209
+275
+304
+308
 obs-a
 obs-a
 0
@@ -1291,10 +1295,10 @@ obs-a
 -1000
 
 SLIDER
-140
-453
-325
-486
+26
+532
+211
+565
 attention-angle
 attention-angle
 1
@@ -1305,10 +1309,10 @@ attention-angle
 degres
 
 SLIDER
-138
-378
-314
-411
+24
+457
+200
+490
 attention-distance
 attention-distance
 0
@@ -1319,10 +1323,10 @@ attention-distance
 NIL
 
 SWITCH
-22
-418
-117
-451
+208
+238
+303
+271
 richa-a
 richa-a
 0
@@ -1330,10 +1334,10 @@ richa-a
 -1000
 
 SLIDER
-806
-239
-914
-272
+828
+297
+936
+330
 fruitPerTree
 fruitPerTree
 0
@@ -1344,10 +1348,10 @@ fruitPerTree
 NIL
 
 SWITCH
-199
-179
-298
-212
+16
+229
+128
+262
 memory
 memory
 0
@@ -1355,10 +1359,10 @@ memory
 -1000
 
 SWITCH
-23
-383
-118
-416
+209
+203
+304
+236
 expla-a
 expla-a
 0
@@ -1366,10 +1370,10 @@ expla-a
 -1000
 
 SLIDER
-139
-490
-322
-523
+25
+569
+208
+602
 head-tolerance
 head-tolerance
 0
@@ -1380,10 +1384,10 @@ head-tolerance
 degrees
 
 SWITCH
-184
-319
-274
-352
+971
+332
+1061
+365
 torus
 torus
 1
@@ -1391,10 +1395,10 @@ torus
 -1000
 
 SLIDER
-11
-95
-180
-128
+969
+394
+1105
+427
 num-obstacles
 num-obstacles
 0
@@ -1405,10 +1409,10 @@ num-obstacles
 NIL
 
 SLIDER
-807
-201
-914
-234
+829
+259
+936
+292
 numTrees
 numTrees
 0
@@ -1419,10 +1423,10 @@ numTrees
 NIL
 
 SWITCH
-200
-142
-293
-175
+26
+411
+139
+444
 same-h
 same-h
 1
@@ -1430,10 +1434,10 @@ same-h
 -1000
 
 SLIDER
-199
-106
-329
-139
+27
+377
+157
+410
 init-h
 init-h
 0
@@ -1444,20 +1448,20 @@ init-h
 degres
 
 CHOOSER
-902
+855
 10
-1032
+985
 55
 Distribution-Agents
 Distribution-Agents
 "selfish" "realist" "kind" "1/3kind1/3realist1/3selfish"
-2
+0
 
 SWITCH
-11
-134
-173
-167
+970
+438
+1109
+471
 regular-obstacles
 regular-obstacles
 1
@@ -1465,10 +1469,10 @@ regular-obstacles
 -1000
 
 SLIDER
-19
-244
-166
-277
+815
+431
+962
+464
 obstacle-mean-width
 obstacle-mean-width
 0
@@ -1479,10 +1483,10 @@ obstacle-mean-width
 NIL
 
 SLIDER
-23
-333
-166
-366
+816
+525
+959
+558
 obstacle-solidity
 obstacle-solidity
 0
@@ -1493,10 +1497,10 @@ obstacle-solidity
 NIL
 
 SLIDER
-22
-295
-166
-328
+815
+487
+959
+520
 obstacle-thickness
 obstacle-thickness
 0
@@ -1507,10 +1511,10 @@ obstacle-thickness
 NIL
 
 SLIDER
-950
-455
-1059
-488
+957
+576
+1066
+609
 print-every
 print-every
 0
@@ -1519,24 +1523,6 @@ print-every
 25
 1
 NIL
-
-PLOT
-15
-675
-215
-825
-alive-plot
-time
-agent
-0.0
-100.0
-0.0
-100.0
-true
-false
-PENS
-"alive" 1.0 0 -2674135 true
-"dead" 1.0 0 -16777216 true
 
 MONITOR
 436
@@ -1629,81 +1615,24 @@ count turtles with [strategy = 1 and hidden? = false]
 1
 
 TEXTBOX
-818
+824
 80
-879
+885
 98
 Strategy :
 
 TEXTBOX
-802
-150
-887
-168
+827
+151
+874
+169
 Energy state:
 
 PLOT
-219
-658
-439
-808
-energy-plot
-Time
-%
-0.0
-100.0
-0.0
-100.0
-true
-false
-PENS
-"rich" 1.0 0 -13345367 true
-"normal" 1.0 0 -10899396 true
-"poor" 1.0 0 -2674135 true
-
-PLOT
-443
-656
-643
-806
-strategy-plot
-Time
-%
-0.0
-100.0
-0.0
-100.0
-true
-false
-PENS
-"good" 1.0 0 -1184463 true
-"bad" 1.0 0 -8973748 true
-"realist" 1.0 0 -13840069 true
-"self" 1.0 0 -16777216 true
-
-PLOT
-854
-651
-1054
+332
+581
 801
-Agent-Adapt-plot
-Time
-%
-0.0
-10.0
-0.0
-10.0
-true
-false
-PENS
-"rich" 1.0 0 -1184463 true
-"explorer" 1.0 0 -10899396 true
-
-PLOT
-653
-651
-853
-801
+701
 cooperation-plot
 Time
 %
@@ -1718,69 +1647,41 @@ PENS
 "defect" 1.0 0 -16777216 true
 
 SWITCH
-950
-223
-1071
-256
+975
+193
+1096
+226
 adaptCol
 adaptCol
 1
 1
 -1000
 
-SLIDER
-750
-10
-842
-43
-dec
-dec
-1
-180
-70
-1
-1
-NIL
-
-SLIDER
-750
-45
-842
-78
-distA
-distA
-0
-10
-3
-1
-1
-NIL
-
 MONITOR
-811
-503
-892
-552
+818
+624
+899
+673
 vital space
 v-space
 3
 1
 
 MONITOR
-918
-509
-975
-558
+970
+626
+1027
+675
 to
 (( count patches - count patches with [pcolor = cobstacle or pcolor = cwall] )   / count patches ) * generating-speed * fruitPerTree
 3
 1
 
 SLIDER
-19
-206
-166
-239
+815
+393
+962
+426
 obstacle-mean-height
 obstacle-mean-height
 0
@@ -1791,39 +1692,88 @@ obstacle-mean-height
 NIL
 
 TEXTBOX
-0
-187
-142
-205
+808
+375
+950
+393
 reg shape :
 
 TEXTBOX
-4
-277
-154
-295
+804
+466
+954
+484
 unreg shape :\n
 
 CHOOSER
-7
-537
-99
-582
+998
+10
+1090
+55
 TFT-Start
 TFT-Start
 "D" "C" "B"
 1
 
 SWITCH
-197
-214
-321
-247
+16
+267
+155
+300
 big-memory
 big-memory
 1
 1
 -1000
+
+TEXTBOX
+808
+238
+958
+256
+Fruit conf.:
+
+TEXTBOX
+808
+203
+958
+221
+Env. Settings:
+
+TEXTBOX
+6
+67
+156
+85
+Agents settings :
+
+TEXTBOX
+18
+352
+168
+370
+Visual abilities:
+
+TEXTBOX
+14
+200
+164
+218
+Memory abilities
+
+TEXTBOX
+171
+174
+321
+192
+Adapt behaviors:
+
+TEXTBOX
+14
+94
+164
+112
+Gnl:
 
 @#$#@#$#@
 @#$#@#$#@
