@@ -1130,7 +1130,7 @@ GRAPHICS-WINDOW
 25
 25
 9.0
-0
+1
 7
 1
 1
@@ -1147,7 +1147,7 @@ GRAPHICS-WINDOW
 CC-WINDOW
 5
 715
-1118
+1100
 810
 Command Center
 0
@@ -1175,7 +1175,7 @@ num-steps
 num-steps
 0
 5000
-2254
+2000
 1
 1
 runs
@@ -1397,7 +1397,7 @@ torus
 SLIDER
 969
 394
-1105
+1078
 427
 num-obstacles
 num-obstacles
@@ -1417,7 +1417,7 @@ numTrees
 numTrees
 0
 20
-3
+4
 1
 1
 NIL
@@ -1448,19 +1448,19 @@ init-h
 degres
 
 CHOOSER
-855
+844
 10
-985
+974
 55
 Distribution-Agents
 Distribution-Agents
 "selfish" "realist" "kind" "1/3kind1/3realist1/3selfish"
-0
+2
 
 SWITCH
 970
 438
-1109
+1077
 471
 regular-obstacles
 regular-obstacles
@@ -1545,9 +1545,9 @@ count-steps
 1
 
 MONITOR
-891
+880
 128
-941
+930
 177
 Rich :
 count turtles with [e-state = s-rich]
@@ -1555,9 +1555,9 @@ count turtles with [e-state = s-rich]
 1
 
 MONITOR
-945
+934
 129
-995
+984
 178
 Normal
 count turtles with [e-state = s-normal]
@@ -1565,9 +1565,9 @@ count turtles with [e-state = s-normal]
 1
 
 MONITOR
-999
+988
 128
-1049
+1038
 177
 Poor
 count turtles with [e-state = s-poor]
@@ -1575,9 +1575,9 @@ count turtles with [e-state = s-poor]
 1
 
 MONITOR
-1052
+1041
 128
-1102
+1091
 177
 Dead
 num-agents - count turtles
@@ -1585,9 +1585,9 @@ num-agents - count turtles
 1
 
 MONITOR
-889
+878
 65
-939
+928
 114
 Kind
 count turtles with [strategy = 2 and hidden? = false]
@@ -1595,9 +1595,9 @@ count turtles with [strategy = 2 and hidden? = false]
 1
 
 MONITOR
-999
+988
 64
-1049
+1038
 113
 Selfish
 count turtles with [strategy = 0 and hidden? = false]
@@ -1605,9 +1605,9 @@ count turtles with [strategy = 0 and hidden? = false]
 1
 
 MONITOR
-944
+933
 63
-994
+983
 112
 Real
 count turtles with [strategy = 1 and hidden? = false]
@@ -1615,16 +1615,16 @@ count turtles with [strategy = 1 and hidden? = false]
 1
 
 TEXTBOX
-824
+813
 80
-885
+874
 98
 Strategy :
 
 TEXTBOX
-827
+816
 151
-874
+863
 169
 Energy state:
 
@@ -1637,7 +1637,7 @@ cooperation-plot
 Time
 %
 0.0
-100.0
+2000.0
 0.0
 100.0
 true
@@ -1647,9 +1647,9 @@ PENS
 "defect" 1.0 0 -16777216 true
 
 SWITCH
-975
+964
 193
-1096
+1085
 226
 adaptCol
 adaptCol
@@ -1706,9 +1706,9 @@ TEXTBOX
 unreg shape :\n
 
 CHOOSER
-998
+987
 10
-1090
+1079
 55
 TFT-Start
 TFT-Start
