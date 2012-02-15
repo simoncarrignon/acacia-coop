@@ -17,7 +17,10 @@ readAcaciaOutput<-function(filename){
 	
 }
 
+##################################################
 
+#specific plot two see vital space density function
+#for each number of obstacles
 threeVitalSpacePlot<-function(data){
 
 library(sm)
@@ -36,9 +39,9 @@ legend("topright",legend=unique(sort(data$no)), fill=colfill)
 
 
 
-acacia<-function(a,nf,rs,no){return(a[a$Num_Fruits == nf & a$Nb.Obstacle == no & a$Reg.speed == rs,])}
+#onEnv<-function(a,nf,rs,no){return(a[a$Num_Fruits == nf & a$Nb.Obstacle == no & a$Reg.speed == rs,])}
 
-acaciab<-function(a,nf,rs,no){return(a[a$nf == nf & a$no == no & a$rs == rs,])}
+oneEnv<-function(a,nf,rs,no){return(a[a$nf == nf & a$no == no & a$rs == rs,])}
 
 
 diffbyrapCol<-function(a,t){
@@ -299,7 +302,18 @@ h=1100
 
 # fbs=c(nf[1]*rs,nf[2]*rs,nf[3]*rs)
 
-addFbs<-function(a){a$fbs = a$Num_Fruits/(2*2^(6-a$Reg.speed))}
+#addFbs<-function(a){a$fbs = a$Num_Fruits/(2*2^(6-a$Reg.speed))}
+#addFbs<-function(a){a$fbs = a$nf/(2*2^(6-a$rs))}
+addFbs<-function(a){
+	fbs=a$nf/(2*2^(6-a$rs));
+	a=cbind(a,fbs);
+	return(a);
+}
+addFbsChar<-function(a){
+	fbs=paste("(",a$nf,",",a$rs,")",sep="");
+	a=cbind(a,fbs);
+	return(a);
+}
 
 # 
 #  png("diff_fct_100.png",width=1500,height=1500,pointsize=35)
