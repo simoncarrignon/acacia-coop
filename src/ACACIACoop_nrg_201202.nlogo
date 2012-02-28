@@ -118,8 +118,8 @@ to move
 ;repeat 2[
 set fruitPerTree 5
 repeat 3 [
-set num-obstacles 10
-repeat 3 [
+set num-obstacles 0
+repeat 5 [
 set generating-speed 3
 repeat 3 [
 ;
@@ -184,7 +184,7 @@ repeat num-sims [
    
    set generating-speed generating-speed + 1
    ]
-  set num-obstacles num-obstacles + 10  
+  set num-obstacles num-obstacles + 50  
   ]
   
    set fruitPerTree fruitPerTree + 6
@@ -1402,8 +1402,8 @@ SLIDER
 num-obstacles
 num-obstacles
 0
-50
-10
+1000
+0
 1
 1
 NIL
@@ -1455,7 +1455,7 @@ CHOOSER
 Distribution-Agents
 Distribution-Agents
 "selfish" "realist" "kind" "1/3kind1/3realist1/3selfish"
-2
+0
 
 SWITCH
 970
@@ -1770,9 +1770,9 @@ Adapt behaviors:
 
 TEXTBOX
 14
-94
+89
 164
-112
+107
 Gnl:
 
 @#$#@#$#@
