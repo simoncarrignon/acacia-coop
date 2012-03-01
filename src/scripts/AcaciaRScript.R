@@ -22,26 +22,30 @@ readAcaciaOutput<-function(filename){
 #specific plot two see vital space density function
 #for each number of obstacles
 threeVitalSpacePlot<-function(data){
-
-library(sm)
-
-# plot densities
-sm.density.compare(data$vital.space, data$no, xlab="Vital Space")
-title(main="Vital Space wrt Obstacle Number")
-
-# add legend via mouse click
-colfill<-c(2:(2+length(unique(data$no))))
-legend("topright",legend=unique(sort(data$no)), fill=colfill) 
+	
+	library(sm);
+	
+# plot densities;
+	sm.density.compare(data$vital.space, data$no, xlab="Vital Space");
+	title(main="Vital Space wrt Obstacle Number");
+	
+# add legend via mouse click;
+	colfill<-c(2:(2+length(unique(data$no))));
+	legend("topright",legend=unique(sort(data$no)), fill=colfill) ;
 }
 
 
+
+interPlotObstacleEffect<-function(){interaction.plot(kind$fbs,kind$no,kind$n_alive,main="Mean alive agents at the end",xlab="Available Ressource (nf by timestep)",ylab="Number of alive agents")}
 
 
 
 
 #onEnv<-function(a,nf,rs,no){return(a[a$Num_Fruits == nf & a$Nb.Obstacle == no & a$Reg.speed == rs,])}
 
-oneEnv<-function(a,nf,rs,no){return(a[a$nf == nf & a$no == no & a$rs == rs,])}
+############################################
+## oneEnv return data from on set of environmental setup
+oneEnv<-function(aData,nf,rs,no){return(aData[aData$nf == nf & aData$no == no & aData$rs == rs,])}
 
 
 diffbyrapCol<-function(a,t){
@@ -310,8 +314,8 @@ addFbs<-function(a){
 	return(a);
 }
 addFbsChar<-function(a){
-	fbs=paste("(",a$nf,",",a$rs,")",sep="");
-	a=cbind(a,fbs);
+	fbsChar=paste("(",a$nf,",",a$rs,")",sep="");
+	a=cbind(a,fbsChar);
 	return(a);
 }
 
@@ -362,8 +366,8 @@ parcours<-function(a){
 		
 		#graphAlive(neochrome,Num_Fruits,Reg_Speed,Num_Obs)
 		
-		for (Initial_Pop in unique(a$pop)){
-		    cur=acaciab(a,Num_Fruits,Reg_Speed,Num_Obs)[acaciab(a,Num_Fruits,Reg_Speed,Num_Obs)$pop == Initial_Pop,]
+		for (Initial_Pop in unique(a$init)){
+		    cur=oneEnv(a,Num_Fruits,Reg_Speed,Num_Obs)[oneEnv(a,Num_Fruits,Reg_Speed,Num_Obs)$init == Initial_Pop,]
 		    
 # 		    print(cbind(Reg_Speed,as.array(tapply(cur$alive[cur$pop == Initial_Pop],cur$Counter[cur$pop == Initial_Pop],mean))))stringsAsFactors = FALSE’
 # 		    print(cbind(Reg_Speed,Num_Fruits,Num_Obs,Initial_Pop,tapply(cur$alive[cur$pop == Initial_Pop],cur$Counter[cur$pop == Initial_Pop],mean)))
@@ -373,7 +377,7 @@ parcours<-function(a){
 # 		    rownames(stde)="Ecart Type"
 		    
 # 		    allMeanSd=rbind(allMeanSd,means,stde)
-		    allMeanSd=rbind(allMeanSd,data.frame(cbind(Reg_Speed,Num_Fruits,Num_Obs,Initial_Pop,mean(cur$alive),sd(cur$alive))))
+		    allMeanSd=rbind(allMeanSd,data.frame(cbind(Reg_Speed,Num_Fruits,Num_Obs,Initial_Pop,mean(cur$n_alive),sd(cur$n_alive))))
 
 		    print(allMeanSd)
 		}
@@ -385,6 +389,85 @@ parcours<-function(a){
     names(allMeanSd)[6]="standard deviation"
     return(allMeanSd)
 }
+
+#Pour faire ce parcours les noms doivent être changé cf ci-dessus
+allttest<-function(a){
+    for (rs in unique(a$rs)){
+	for (nf in unique(a$nf)){
+	    for (no in unique(a$no)){
+		 r=t.test(oneEnv(a[a$init == "kind",],nf,rs,no)$n_alive,oneEnv(a[a$init == "self",],nf,rs,no)$n_alive)
+		print(paste(rs,nf,no))
+		 print(c(r$p.value,r$estimate))
+	    }
+	}
+    }
+}
+
+#take value frome different csv file and concatenate them in one table
+dataProcess<-function(){
+
+ selfA = readAcaciaOutput("08:47:37.874 PM 15-févr.-2012ACACIAout.csv")
+ selfB = readAcaciaOutput("08:47:50.666 PM 15-févr.-2012ACACIAout.csv")
+kindA = readAcaciaOutput("09:50:37.407 PM 14-févr.-2012ACACIAout.csv")
+kindB = readAcaciaOutput("10:16:24.087 PM 14-févr.-2012ACACIAout.csv")
+
+kind=rbind(kindA,kindB)
+self=rbind(selfA,selfB)
+kind=kind[kind$time==2000,]
+self=self[self$time==2000,]
+self=addFbs(self)
+kind=addFbs(kind)
+
+self=addFbsChar(self)
+kind=addFbsChar(kind)
+init="self"
+self=cbind(self,init)
+init="kind"
+kind=cbind(kind,init)
+}
+#########reminder
+fixAParam<-function(data,param,val){
+	return(data[param == val,])
+}
+
+aliveWRTrs<-function(){
+	for( nf in unique(kind$nf)){
+		png(paste("alive_agent_wrt_rs-NF",nf,"-NO20.png",sep=""))
+		currA=kind[kind$nf==nf & kind$no == 20,]
+		currS=self[self$nf==nf & self$no == 20,]
+		barplotAcacia(currA,currS,"rs","n_alive",xlab="Regeneration Speed",ylab="Agents Alive",ylim=c(0,100))
+		dev.off()
+	}
+	
+        
+
+	
+}
+
+tableMaker<-function(){
+
+	myEnvA=kind[kind$fbs==0.6875,]#2.125
+	myEnvS=self[self$fbs==0.6875,]#
+	
+	M_a=tapply(myEnvA$n_alive,myEnvA$no,mean)
+	M_s=tapply(myEnvS$n_alive,myEnvS$no,mean)
+	
+	SD_a=tapply(myEnvA$n_alive,myEnvA$no,sd)
+	SD_s=tapply(myEnvS$n_alive,myEnvS$no,sd)
+	
+	cbind(M_a,M_s,SD_a,SD_s)
+
+}
+barplotAcacia<-function(a,b,x,y,fun=mean,...){
+	Altruistic=tapply( a[,y], a[,x], fun);
+	Selfish=tapply( b[,y], b[,x], fun);
+	both=rbind(Altruistic,Selfish);
+	AltruisticSe=tapply( a[,y], a[,x], sd);
+	SelfishSe=tapply( b[,y], b[,x], sd);
+	bothSe=rbind(AltruisticSe,SelfishSe);
+	barplot2(both,beside=T,legend=T,plot.ci=T,ci.u=both+bothSe,ci.l=both,col=c("white","grey"),...);
+}
+
 
 
 alive_initBehavBox<-function(a){
@@ -452,6 +535,16 @@ plotAliveTwoPop<-function(data,col=c("red","white")){
 
 }
 
+
+##################################################
+#interaction plot ressource/alive for three NO
+ThreIntPlot<-function(data){
+par(mfrow=c(3,1),mar=c(4,4,2,2))
+	for(no in unique(data$no)){
+		interaction.plot(data$fbs[data$no == no],data$init[data$no == no],data$n_alive[data$no == no])
+	}
+}
+
 #####
 ## quick and dirty copy past from medea scripts
 #####
@@ -511,3 +604,16 @@ createHeatMat<-function(x,y,data,complete=TRUE,mod=1,ymin=0,ymax=100){
 
 	return(res)	
 }
+
+
+printGraph<-function(){
+	
+	for(env in(list( c(3,5),c(5,17),c(4,11)))){
+		png(paste("alive_agent_wrNo-NF",env[2],"-RS",env[1],".png",sep=""))
+		barplotAcacia(kind[kind$nf == env[2]& kind$rs == env[1],], self[self$nf == env[2]& self$rs == env[1],],"no","n_alive",xlab="Number of Obstacles",ylab="Agents Alive",ylim=c(0,100))
+		dev.off()	
+
+	}
+
+}
+
