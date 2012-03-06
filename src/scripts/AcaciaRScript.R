@@ -21,7 +21,7 @@ readAcaciaOutput<-function(filename){
 
 #specific plot two see vital space density function
 #for each number of obstacles
-threeVitalSpacePlot<-function(data){
+threeVitalSpacePlot<-function(data,...){
 	
 	library(sm);
 	
@@ -458,14 +458,20 @@ tableMaker<-function(){
 	cbind(M_a,M_s,SD_a,SD_s)
 
 }
-barplotAcacia<-function(a,b,x,y,fun=mean,...){
+barplotAcacia<-function(a,b,x,y,fun=mean,minus=F,...){
 	Altruistic=tapply( a[,y], a[,x], fun);
 	Selfish=tapply( b[,y], b[,x], fun);
 	both=rbind(Altruistic,Selfish);
 	AltruisticSe=tapply( a[,y], a[,x], sd);
 	SelfishSe=tapply( b[,y], b[,x], sd);
 	bothSe=rbind(AltruisticSe,SelfishSe);
-	barplot2(both,beside=T,legend=T,plot.ci=T,ci.u=both+bothSe,ci.l=both,col=c("white","grey"),...);
+	if(minus){
+		d=Altruistic-Selfish	
+		dSe=AltruisticSe - SelfishSe
+		barplot2(d,beside=T,...);
+	}
+	else
+		barplot2(both,beside=T,legend=T,plot.ci=T,ylim=c(0,100),ci.u=both+bothSe,ci.l=both,col=c("white","grey"),...);
 }
 
 
@@ -583,11 +589,6 @@ axis(2,yaxs)
 createHeatMat<-function(x,y,data,complete=TRUE,mod=1,ymin=0,ymax=100){
  	res=daply(.variables=c(x,y),.data=data,.drop_i=FALSE,.fun=function(x)length(x[,1]))
 	res[is.na(res)]<-0
-#	res=melt(res)
-#	print(res)
-#	res=ddply(res,.(V4),transform,rescale=rescale(value))
-#	print(res)
-#	res=res
 	res=res/apply(res,1,sum)
 	#the following for loop will add missing column
 	if(complete) {
@@ -604,16 +605,98 @@ createHeatMat<-function(x,y,data,complete=TRUE,mod=1,ymin=0,ymax=100){
 
 	return(res)	
 }
-
+####endofcopypaste
 
 printGraph<-function(){
 	
 	for(env in(list( c(3,5),c(5,17),c(4,11)))){
-		png(paste("alive_agent_wrNo-NF",env[2],"-RS",env[1],".png",sep=""))
-		barplotAcacia(kind[kind$nf == env[2]& kind$rs == env[1],], self[self$nf == env[2]& self$rs == env[1],],"no","n_alive",xlab="Number of Obstacles",ylab="Agents Alive",ylim=c(0,100))
+		png(paste("alive_agent_wrNo0to200-NF",env[2],"-RS",env[1],".png",sep=""))
+		barplotAcacia(kind[kind$nf == env[2]& kind$rs == env[1],], self[self$nf == env[2]& self$rs == env[1],],"no","n_alive",xlab="Number of Obstacles",ylab="Agents Alive",ylim=c(0,100),main=paste("Alive agent at t=200\nfor nf=",nf," and rs=",rs,sep=""))
 		dev.off()	
 
 	}
+
+}
+printGraphAllEnv<-function(minus=F){
+	
+	for( nf in unique(kind$nf)){
+		for( rs in unique(kind$rs)){
+			mytitle=""
+			if(minus)
+				mytitle=paste("Diff beetwen the two pop\nfor nf=",nf," and rs=",rs,sep="")
+			else
+				mytitle=paste("Alive agent at t=2000\nfor nf=",nf," and rs=",rs,sep="")
+			png(paste("alive_agent_wrNo0to200-NF",nf,"-RS",rs,"-Diff",minus,".png",sep=""))
+			barplotAcacia(kind[kind$nf == nf& kind$rs == rs,], self[self$nf == nf& self$rs == rs,],"no","n_alive",xlab="Number of Obstacles",ylab="Agents Alive",minus=minus,main=mytitle)
+			dev.off()	
+
+		}
+	}
+
+}
+
+#################################################
+#Return a normalized matrix
+createHeatMat<-function(x,y,data){
+	library(plyr)
+ 	res=daply(.variables=c(x,y),.data=data,.fun=function(x)length(x[,1]))
+	res[is.na(res)]<-0
+	res=res/apply(res,1,sum)
+	return(res)	
+}
+
+plotRealist <- function(dataz){
+		res=dataz;
+		res[,"n_realist"]=res[,"n_realist"]-res[,"n_realist"]%%3
+		res=createHeatMat("Rep","n_realist",as.data.frame(res))
+		     res.m=melt(res)
+		     ggplot(res.m,aes(Rep,n_realist)) +
+		     geom_tile(aes(fill = value)) +
+		     scale_fill_gradient(low = "white",high = "orange2") +
+		     scale_y_continuous("\nNumber of realist at t=3000",limits=c(0,100)) +
+		     scale_x_continuous("\n% of selfish at t=0") +
+		     opts(
+			  panel.grid.major = theme_blank(),
+			  panel.grid.minor = theme_blank(),
+			  panel.background = theme_rect(),
+			  axis.text.x=theme_text(col="black"),
+			  axis.text.y=theme_text(col="black"),
+			  plot.margin = unit(c(0,0,0,0), "lines"),
+			  title=paste("Number of Realist into the population \n after 3000 steps\n",sep="")
+			  )
+}
+
+ggplotRatioHeatMap<-function(dataz,...){
+	library(ggplot2)
+	library(grid)
+	res=dataz
+	res[,"n_alive"]=(res[,"n_kind"]+1)/(res[,"n_selfish"]+1)
+	res[,"n_alive"]=(res[,"n_kind"]+1)/(res[,"n_selfish"]+1)
+	res[,"n_alive"]=round(log10(res[,"n_alive"]),2);
+	res[,"n_alive"]=10^res[,"n_alive"]
+	res=createHeatMat("Rep","n_alive",as.data.frame(res))
+	res.m=melt(res)
+	ggplot(res.m,aes(Rep,n_alive)) + 
+	geom_tile(aes(fill = value)) +
+	scale_fill_gradient(low = "white",high = "violetred4") +
+	scale_y_log10(
+		      expression(
+				 bgroup("(",frac(kind+1,selfsh+1),")")["t=2000"]
+				 ,"\n")
+		      ,breaks=c(0.01,0.1,0,10,100)
+		      ,limits=c(.01,110)
+		      ,labels = format(c(0.01,0.1,0,10,100),scientific=F)
+		      ) +
+	scale_x_continuous("\n% of selfish at t=0") +
+	opts(
+	     panel.grid.major = theme_blank(),
+	     panel.grid.minor = theme_blank(),
+	     panel.background = theme_rect(),
+	     axis.text.x=theme_text(col="black"),
+	     axis.text.y=theme_text(col="black"),
+	     plot.margin = unit(c(0,0,0,0), "lines"),
+	     title=paste("Composition of the population \n after 2000 steps\n",sep="")
+	     )
 
 }
 
