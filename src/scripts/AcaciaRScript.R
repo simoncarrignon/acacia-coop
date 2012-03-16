@@ -392,24 +392,28 @@ parcours<-function(a){
 
 #Pour faire ce parcours les noms doivent être changé cf ci-dessus
 allttest<-function(a){
+result=c()	
     for (rs in unique(a$rs)){
 	for (nf in unique(a$nf)){
 	    for (no in unique(a$no)){
 		 r=t.test(oneEnv(a[a$init == "kind",],nf,rs,no)$n_alive,oneEnv(a[a$init == "self",],nf,rs,no)$n_alive)
+		result=rbind(result,cbind(rs,nf,no,r$statistic,r$estimate[1],r$estimate[2],sd(oneEnv(a[a$init == "kind",],nf,rs,no)$n_alive),sd(oneEnv(a[a$init == "self",],nf,rs,no)$n_alive)))
 		print(paste(rs,nf,no))
-		 print(c(r$p.value,r$estimate))
 	    }
 	}
     }
+colname=c("g_speed","nf","no","T.value","Mean Altruist","Mean Selfish","SD Altruist","SD Selfish")
+colnames(result)=colname
+return(result)
 }
 
 #take value frome different csv file and concatenate them in one table
 dataProcess<-function(){
 
- selfA = readAcaciaOutput("08:47:37.874 PM 15-févr.-2012ACACIAout.csv")
- selfB = readAcaciaOutput("08:47:50.666 PM 15-févr.-2012ACACIAout.csv")
-kindA = readAcaciaOutput("09:50:37.407 PM 14-févr.-2012ACACIAout.csv")
-kindB = readAcaciaOutput("10:16:24.087 PM 14-févr.-2012ACACIAout.csv")
+selfA = readAcaciaOutput("data/08:47:37.874 PM 15-févr.-2012ACACIAout.csv")
+selfB = readAcaciaOutput("data/08:47:50.666 PM 15-févr.-2012ACACIAout.csv")
+kindA = readAcaciaOutput("data/09:50:37.407 PM 14-févr.-2012ACACIAout.csv")
+kindB = readAcaciaOutput("data/10:16:24.087 PM 14-févr.-2012ACACIAout.csv")
 
 kind=rbind(kindA,kindB)
 self=rbind(selfA,selfB)
@@ -661,7 +665,6 @@ plotRealist <- function(dataz){
 			  panel.background = theme_rect(),
 			  axis.text.x=theme_text(col="black"),
 			  axis.text.y=theme_text(col="black"),
-			  plot.margin = unit(c(0,0,0,0), "lines"),
 			  title=paste("Number of Realist into the population \n after 3000 steps\n",sep="")
 			  )
 }
@@ -672,7 +675,7 @@ ggplotRatioHeatMap<-function(dataz,...){
 	res=dataz
 	res[,"n_alive"]=(res[,"n_kind"]+1)/(res[,"n_selfish"]+1)
 	res[,"n_alive"]=(res[,"n_kind"]+1)/(res[,"n_selfish"]+1)
-	res[,"n_alive"]=round(log10(res[,"n_alive"]),2);
+	res[,"n_alive"]=round(log10(res[,"n_alive"]),1);
 	res[,"n_alive"]=10^res[,"n_alive"]
 	res=createHeatMat("Rep","n_alive",as.data.frame(res))
 	res.m=melt(res)
@@ -681,7 +684,7 @@ ggplotRatioHeatMap<-function(dataz,...){
 	scale_fill_gradient(low = "white",high = "violetred4") +
 	scale_y_log10(
 		      expression(
-				 bgroup("(",frac(kind+1,selfsh+1),")")["t=2000"]
+				 bgroup("(",frac(kind+1,selfish+1),")")["t=2000"]
 				 ,"\n")
 		      ,breaks=c(0.01,0.1,0,10,100)
 		      ,limits=c(.01,110)
